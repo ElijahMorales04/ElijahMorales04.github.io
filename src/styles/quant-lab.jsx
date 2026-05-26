@@ -213,7 +213,7 @@ function QLHero() {
             <a {...UI.externalLinkProps(CONTENT.links.linkedin)} className="ql-cta">
               <UI.Icon.Linkedin width="14" height="14" /> LinkedIn
             </a>
-            <a {...UI.externalLinkProps(`mailto:${CONTENT.links.email}`)} className="ql-cta">
+            <a {...UI.emailLinkProps(CONTENT.links.email)} className="ql-cta">
               <UI.Icon.Mail width="14" height="14" /> Email
             </a>
           </div>
@@ -664,12 +664,12 @@ function QLContact() {
       </div>
       <div style={{ marginTop: 56, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 0, borderTop: `1px solid ${QL.rule}`, borderBottom: `1px solid ${QL.rule}` }}>
         {[
-          { k: 'Email',    v: CONTENT.links.email,    href: 'mailto:' + CONTENT.links.email },
+          { k: 'Email',    v: CONTENT.links.email,    linkProps: UI.emailLinkProps(CONTENT.links.email) },
           { k: 'LinkedIn', v: 'in/elijah-morales',    href: CONTENT.links.linkedin },
           { k: 'GitHub',   v: 'ElijahMorales04',      href: CONTENT.links.github },
           { k: 'Location', v: 'Fort Lauderdale, FL',  href: null },
         ].map((c, i) => (
-          <a key={c.k} {...(c.href ? UI.externalLinkProps(c.href) : { href: undefined })}
+          <a key={c.k} {...(c.linkProps || (c.href ? UI.externalLinkProps(c.href) : { href: undefined }))}
              style={{
                padding: '26px 24px', textDecoration: 'none', color: 'inherit',
                borderLeft: i === 0 ? 'none' : `1px solid ${QL.rule}`,

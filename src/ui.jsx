@@ -107,6 +107,16 @@ UI.externalLinkProps = (href) => ({
   rel: 'noopener noreferrer',
 });
 
+UI.mailtoHref = (email) => {
+  const subject = encodeURIComponent('Portfolio inquiry');
+  const body = encodeURIComponent('Hi Elijah,\n\n');
+  return `mailto:${email}?subject=${subject}&body=${body}`;
+};
+
+UI.emailLinkProps = (email) => ({
+  href: UI.mailtoHref(email),
+});
+
 UI.useScrollSpy = function (ids) {
   const [active, setActive] = React.useState(ids[0]);
   React.useEffect(() => {
