@@ -646,6 +646,13 @@ function QLContact() {
   const now = new Date();
   const year = now.getFullYear();
   const lastUpdated = now.toLocaleString('en-US', { month: 'short', year: 'numeric' }).toUpperCase();
+  const [copied, setCopied] = React.useState(false);
+  const copyEmail = async () => {
+    const ok = await UI.copyText(CONTENT.links.email);
+    if (!ok) return;
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1600);
+  };
   return (
     <section id="contact" style={{
       padding: 'clamp(80px, 12vw, 160px) clamp(20px,5vw,72px) clamp(60px,8vw,100px)',
@@ -663,16 +670,29 @@ function QLContact() {
         Open to conversations around quantitative analytics, data science, risk modeling, and applied research.
       </div>
       <div style={{ marginTop: 56, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 0, borderTop: `1px solid ${QL.rule}`, borderBottom: `1px solid ${QL.rule}` }}>
+        <div style={{ padding: '26px 24px', color: 'inherit' }}>
+          <div style={{ fontFamily: 'Geist Mono, monospace', fontSize: 10, color: QL.faint, letterSpacing: '0.12em' }}>EMAIL</div>
+          <div style={{ marginTop: 8, fontSize: 18, color: QL.ink, userSelect: 'text', WebkitUserSelect: 'text' }}>
+            {CONTENT.links.email}
+          </div>
+          <div style={{ marginTop: 14, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <a {...UI.emailLinkProps(CONTENT.links.email)} className="ql-contact-action">
+              <UI.Icon.Mail width="13" height="13" /> Compose
+            </a>
+            <button type="button" onClick={copyEmail} className="ql-contact-action">
+              <UI.Icon.Copy width="13" height="13" /> {copied ? 'Copied' : 'Copy'}
+            </button>
+          </div>
+        </div>
         {[
-          { k: 'Email',    v: CONTENT.links.email,    linkProps: UI.emailLinkProps(CONTENT.links.email) },
-          { k: 'LinkedIn', v: 'in/elijah-morales',    href: CONTENT.links.linkedin },
-          { k: 'GitHub',   v: 'ElijahMorales04',      href: CONTENT.links.github },
-          { k: 'Location', v: 'Fort Lauderdale, FL',  href: null },
-        ].map((c, i) => (
-          <a key={c.k} {...(c.linkProps || (c.href ? UI.externalLinkProps(c.href) : { href: undefined }))}
+          { k: 'LinkedIn', v: 'in/elijah-morales',   href: CONTENT.links.linkedin },
+          { k: 'GitHub',   v: 'ElijahMorales04',     href: CONTENT.links.github },
+          { k: 'Location', v: 'Fort Lauderdale, FL', href: null },
+        ].map((c) => (
+          <a key={c.k} {...(c.href ? UI.externalLinkProps(c.href) : { href: undefined })}
              style={{
                padding: '26px 24px', textDecoration: 'none', color: 'inherit',
-               borderLeft: i === 0 ? 'none' : `1px solid ${QL.rule}`,
+               borderLeft: `1px solid ${QL.rule}`,
                display: 'block', cursor: c.href ? 'pointer' : 'default',
              }}>
             <div style={{ fontFamily: 'Geist Mono, monospace', fontSize: 10, color: QL.faint, letterSpacing: '0.12em' }}>{c.k.toUpperCase()}</div>
@@ -777,10 +797,18 @@ function QuantLab() {
         .ql-cta { display: inline-flex; align-items: center; gap: 8px; padding: 11px 16px; border-radius: 999px;
                   background: rgba(255,255,255,0.04); color: ${QL.ink}; border: 1px solid ${QL.rule};
                   font-family: 'Geist Mono', monospace; font-size: 12px; letter-spacing: 0.05em;
-                  text-decoration: none; transition: all .2s; }
+                  text-decoration: none; transition: all .2s; cursor: pointer; }
         .ql-cta:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.20); }
         .ql-cta-primary { background: ${QL.gold}; color: #1a1100; border-color: ${QL.gold}; font-weight: 600; }
         .ql-cta-primary:hover { background: #ffc15a; }
+        .ql-contact-action {
+          display: inline-flex; align-items: center; gap: 6px; padding: 8px 10px;
+          border-radius: 999px; border: 1px solid ${QL.rule}; background: rgba(255,255,255,0.04);
+          color: ${QL.ink}; text-decoration: none; cursor: pointer;
+          font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.05em;
+        }
+        .ql-contact-action:hover { border-color: ${QL.blue}; color: ${QL.gold}; }
+        button.ql-contact-action { appearance: none; -webkit-appearance: none; }
         .ql-filter { padding: 8px 14px; border-radius: 999px; background: transparent; color: ${QL.body};
                      border: 1px solid ${QL.rule}; font-family: 'Geist Mono', monospace; font-size: 12px;
                      letter-spacing: 0.05em; cursor: pointer; transition: all .15s; }

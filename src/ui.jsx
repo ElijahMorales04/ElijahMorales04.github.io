@@ -10,6 +10,12 @@ UI.Icon = {
       <path d="M3 7l9 6 9-6" />
     </svg>
   ),
+  Copy: (p) => (
+    <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="8" y="8" width="11" height="11" rx="2" />
+      <path d="M5 15H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1" />
+    </svg>
+  ),
   Linkedin: (p) => (
     <svg {...p} viewBox="0 0 24 24" fill="currentColor">
       <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3V9zm6 0h3.8v1.7h.05c.53-1 1.83-2.07 3.77-2.07 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.29-.02-2.95-1.8-2.95-1.8 0-2.07 1.41-2.07 2.85V21H9V9z"/>
@@ -111,12 +117,33 @@ UI.emailComposeHref = (email) => {
   const to = encodeURIComponent(email);
   const subject = encodeURIComponent('Portfolio inquiry');
   const body = encodeURIComponent('Hi Elijah,\n\n');
-  return `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${subject}&body=${body}`;
+  return `https://mail.google.com/mail/u/0/?fs=1&tf=cm&to=${to}&su=${subject}&body=${body}`;
 };
 
 UI.emailLinkProps = (email) => ({
   ...UI.externalLinkProps(UI.emailComposeHref(email)),
 });
+
+UI.copyText = async (text) => {
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch {}
+
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'fixed';
+  textarea.style.left = '-9999px';
+  document.body.appendChild(textarea);
+  textarea.select();
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch {}
+  document.body.removeChild(textarea);
+  return ok;
+};
 
 UI.useScrollSpy = function (ids) {
   const [active, setActive] = React.useState(ids[0]);
