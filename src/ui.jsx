@@ -107,14 +107,15 @@ UI.externalLinkProps = (href) => ({
   rel: 'noopener noreferrer',
 });
 
-UI.mailtoHref = (email) => {
+UI.emailComposeHref = (email) => {
+  const to = encodeURIComponent(email);
   const subject = encodeURIComponent('Portfolio inquiry');
   const body = encodeURIComponent('Hi Elijah,\n\n');
-  return `mailto:${email}?subject=${subject}&body=${body}`;
+  return `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${subject}&body=${body}`;
 };
 
 UI.emailLinkProps = (email) => ({
-  href: UI.mailtoHref(email),
+  ...UI.externalLinkProps(UI.emailComposeHref(email)),
 });
 
 UI.useScrollSpy = function (ids) {
