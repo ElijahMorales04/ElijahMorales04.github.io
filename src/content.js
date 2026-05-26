@@ -13,10 +13,11 @@ const CONTENT = {
   },
 
   links: {
-    email:    'elijahymorales04@gmail.com',
-    phone:    '(954) 573-3758',
-    linkedin: 'https://www.linkedin.com/in/elijah-morales',
+    email:    'eym2114@columbia.edu',
+    linkedin: 'https://www.linkedin.com/in/elijah-morales-9a4982253',
+    linkedinHandle: 'in/elijah-morales',
     github:   'https://github.com/ElijahMorales04',
+    githubHandle: 'ElijahMorales04',
     resume:   'assets/resume.pdf',
   },
 
@@ -33,7 +34,7 @@ const CONTENT = {
   ],
 
   focus: [
-    { k: 'Stochastic modeling',     v: 'Markov processes, SDEs, Monte Carlo, structured population models' },
+    { k: 'Stochastic modeling',     v: 'Markov chains, Monte Carlo, stochastic simulation, structured population models' },
     { k: 'Scientific computing',    v: 'Numerical methods, ODE/PDE solvers, optimization, simulation' },
     { k: 'Probability & statistics',v: 'Building toward inference, time-series, and risk analytics' },
     { k: 'Quant data systems',      v: 'Workflow analytics, dashboards, human-in-the-loop automation' },
@@ -150,8 +151,8 @@ const CONTENT = {
       detail: 'M.S. Applied Mathematics · CVN',
       range: 'Jan 2026 — May 2028 (expected)',
       loc: 'New York, NY',
-      gpa: '4.165',
-      gpaScale: 'Columbia A+ scale',
+      gpa: '4.17',
+      gpaScale: 'Columbia scale',
     },
     {
       school: 'University of South Florida',

@@ -83,7 +83,7 @@ function QLBackdrop({ reduced }) {
     raf = requestAnimationFrame(draw);
     return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize); };
   }, [reduced]);
-  return <canvas ref={ref} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />;
+  return <canvas ref={ref} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }} />;
 }
 
 // ── Small SVG of a metapopulation graph (used in featured research) ──
@@ -169,7 +169,7 @@ function QLHero() {
                    radial-gradient(60% 40% at 90% 100%, rgba(246,176,66,0.10) 0%, rgba(6,8,15,0) 60%), ${QL.bg}`,
     }}>
       <QLBackdrop reduced={reduced} />
-      <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: 'minmax(0, 1.6fr) minmax(0, 1fr)', gap: 'clamp(28px, 4vw, 72px)', alignItems: 'center', maxWidth: 1400, margin: '0 auto' }}
+      <div style={{ position: 'relative', zIndex: 1, display: 'grid', gridTemplateColumns: 'minmax(0, 1.6fr) minmax(0, 1fr)', gap: 'clamp(28px, 4vw, 72px)', alignItems: 'center', maxWidth: 1400, margin: '0 auto' }}
            className="ql-hero-grid">
         <div>
           <div style={{
@@ -179,7 +179,7 @@ function QLHero() {
             fontFamily: 'Geist Mono, monospace', fontSize: 11, letterSpacing: '0.12em',
           }}>
             <span style={{ width: 6, height: 6, borderRadius: 6, background: QL.green, boxShadow: `0 0 8px ${QL.green}` }} />
-            OPEN TO 2026 INTERNSHIPS · FT ROLES
+            OPEN TO QUANT · DATA · RISK ROLES
           </div>
           <h1 className="ql-h1" style={{
             fontFamily: 'Newsreader, serif', fontWeight: 400,
@@ -204,13 +204,13 @@ function QLHero() {
             and <span style={{ color: QL.gold }}>data-driven automation</span>.
           </div>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 36 }}>
-            <a href={CONTENT.links.resume} target="_blank" rel="noopener" className="ql-cta ql-cta-primary">
+            <a {...UI.externalLinkProps(CONTENT.links.resume)} className="ql-cta ql-cta-primary">
               Resume <UI.Icon.Download width="14" height="14" />
             </a>
-            <a href={CONTENT.links.github} target="_blank" rel="noopener" className="ql-cta">
+            <a {...UI.externalLinkProps(CONTENT.links.github)} className="ql-cta">
               <UI.Icon.Github width="14" height="14" /> GitHub
             </a>
-            <a href={CONTENT.links.linkedin} target="_blank" rel="noopener" className="ql-cta">
+            <a {...UI.externalLinkProps(CONTENT.links.linkedin)} className="ql-cta">
               <UI.Icon.Linkedin width="14" height="14" /> LinkedIn
             </a>
             <a href={`mailto:${CONTENT.links.email}`} className="ql-cta">
@@ -222,10 +222,10 @@ function QLHero() {
             fontFamily: 'Geist Mono, monospace', fontSize: 11,
           }}>
             {[
-              ['GPA',     '4.165', 'Columbia A+ scale'],
+              ['GPA',     '4.17',  'Columbia scale'],
               ['Program', 'M.S. APMA', 'Columbia · 2028'],
               ['Research','NSF REU',   '67pp preprint, 2024'],
-              ['Based',   'FL → NYC',  'Open hybrid / remote'],
+              ['Based',   'South Florida', 'Fort Lauderdale · Remote / Hybrid'],
             ].map(([k, v, s]) => (
               <div key={k}>
                 <div style={{ color: QL.faint, letterSpacing: '0.1em' }}>{k.toUpperCase()}</div>
@@ -264,12 +264,23 @@ function QLHero() {
           </div>
           {/* annotation */}
           <div style={{
-            position: 'absolute', top: -16, right: -8, transform: 'rotate(4deg)',
-            background: QL.gold, color: '#1a1100', padding: '6px 10px', borderRadius: 4,
-            fontFamily: 'Geist Mono, monospace', fontSize: 10, letterSpacing: '0.1em', fontWeight: 600,
-          }}>NOW HIRING ME · 2026</div>
+            position: 'absolute', top: -14, right: -8,
+            background: 'rgba(91,143,204,0.12)', color: QL.blue,
+            padding: '6px 12px', borderRadius: 999,
+            border: '1px solid rgba(91,143,204,0.35)',
+            fontFamily: 'Geist Mono, monospace', fontSize: 10, letterSpacing: '0.06em',
+            backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)',
+          }}>Open to quant / data / risk roles</div>
         </div>
       </div>
+
+      {/* Scroll-to-explore hint */}
+      <a href="#focus" onClick={(e) => { e.preventDefault(); UI.scrollToId('focus'); }}
+         className="ql-scroll-hint" aria-label="Scroll to explore">
+        <span className="ql-scroll-line" />
+        <span>SCROLL TO EXPLORE</span>
+        <span className="ql-scroll-arrow"><UI.Icon.Chevron width="12" height="12" /></span>
+      </a>
     </section>
   );
 }
@@ -278,7 +289,7 @@ function QLHero() {
 function QLFocus() {
   return (
     <QLSection id="focus" no="01" kicker="Research focus"
-      title={<>Four pillars I work in <em style={{ color: QL.blue, fontStyle: 'italic' }}>day to day</em>.</>}>
+      title={<>Four pillars I'm <em style={{ color: QL.blue, fontStyle: 'italic' }}>building around</em>.</>}>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
         {CONTENT.focus.map((f, i) => (
           <div key={f.k} style={{
@@ -353,7 +364,7 @@ function QLResearch() {
 
           <div style={{ marginTop: 28, display: 'flex', flexWrap: 'wrap', gap: 14 }}>
             {r.links.map((l) => (
-              <a key={l.label} href={l.href} target={l.external ? '_blank' : undefined} rel="noopener"
+              <a key={l.label} {...(l.external ? UI.externalLinkProps(l.href) : { href: l.href })}
                  style={{
                    display: 'inline-flex', alignItems: 'center', gap: 6,
                    padding: '10px 14px', borderRadius: 999,
@@ -596,11 +607,11 @@ function QLRoadmap() {
         <div>
           <div style={{ fontFamily: 'Geist Mono, monospace', fontSize: 11, color: QL.faint, letterSpacing: '0.1em' }}>EDUCATION SUMMARY</div>
           <div style={{ marginTop: 6, fontFamily: 'Newsreader, serif', fontSize: 22, color: QL.ink }}>
-            Columbia M.S. APMA · GPA <span style={{ color: QL.gold }}>4.165</span> · USF B.A. <span style={{ color: QL.gold }}>3.81</span> Magna Cum Laude
+            Columbia M.S. APMA · GPA <span style={{ color: QL.gold }}>4.17</span> · USF B.A. <span style={{ color: QL.gold }}>3.81</span> Magna Cum Laude
           </div>
         </div>
-        <a href={CONTENT.links.resume} target="_blank" rel="noopener" className="ql-cta ql-cta-primary">
-          Full transcript on resume <UI.Icon.Download width="14" height="14" />
+        <a {...UI.externalLinkProps(CONTENT.links.resume)} className="ql-cta ql-cta-primary">
+          Coursework listed on resume <UI.Icon.Download width="14" height="14" />
         </a>
       </div>
     </QLSection>
@@ -632,6 +643,9 @@ function QLWriting() {
 
 // ── CONTACT ──────────────────────────────────────────────────────
 function QLContact() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const lastUpdated = now.toLocaleString('en-US', { month: 'short', year: 'numeric' }).toUpperCase();
   return (
     <section id="contact" style={{
       padding: 'clamp(80px, 12vw, 160px) clamp(20px,5vw,72px) clamp(60px,8vw,100px)',
@@ -646,8 +660,7 @@ function QLContact() {
         Let's <em style={{ color: QL.blue, fontStyle: 'italic' }}>talk numbers</em>.
       </h2>
       <div style={{ marginTop: 28, fontSize: 18, color: QL.body, maxWidth: 760, lineHeight: 1.5 }}>
-        Currently seeking quantitative research, data science, risk analytics, and applied research roles —
-        internships and full-time, on-site, hybrid, or remote. I reply within 24 hours.
+        Open to conversations around quantitative analytics, data science, risk modeling, and applied research.
       </div>
       <div style={{ marginTop: 56, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 0, borderTop: `1px solid ${QL.rule}`, borderBottom: `1px solid ${QL.rule}` }}>
         {[
@@ -656,7 +669,7 @@ function QLContact() {
           { k: 'GitHub',   v: 'ElijahMorales04',      href: CONTENT.links.github },
           { k: 'Location', v: 'Fort Lauderdale, FL',  href: null },
         ].map((c, i) => (
-          <a key={c.k} href={c.href || undefined} target={c.href && c.href.startsWith('http') ? '_blank' : undefined} rel="noopener"
+          <a key={c.k} {...(c.href && c.href.startsWith('http') ? UI.externalLinkProps(c.href) : { href: c.href || undefined })}
              style={{
                padding: '26px 24px', textDecoration: 'none', color: 'inherit',
                borderLeft: i === 0 ? 'none' : `1px solid ${QL.rule}`,
@@ -667,15 +680,15 @@ function QLContact() {
           </a>
         ))}
       </div>
-      <a href={CONTENT.links.resume} target="_blank" rel="noopener" style={{
+      <a {...UI.externalLinkProps(CONTENT.links.resume)} style={{
         marginTop: 36, display: 'inline-flex', alignItems: 'center', gap: 10,
         padding: '14px 22px', borderRadius: 999, background: QL.gold, color: '#1a1100',
         fontFamily: 'Geist Mono, monospace', fontSize: 12, letterSpacing: '0.08em',
         textDecoration: 'none', fontWeight: 600,
       }}>DOWNLOAD RESUME (PDF) <UI.Icon.Download width="14" height="14" /></a>
       <div style={{ marginTop: 64, paddingTop: 24, borderTop: `1px solid ${QL.rule}`, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, fontFamily: 'Geist Mono, monospace', fontSize: 11, color: QL.faint, letterSpacing: '0.06em' }}>
-        <div>© 2026 ELIJAH MORALES · BUILT WITH MATH AND CARE</div>
-        <div>v3.0 · LAST UPDATED · NOV 2026</div>
+        <div>© {year} ELIJAH MORALES · BUILT WITH MATH AND CARE</div>
+        <div>LAST UPDATED · {lastUpdated}</div>
       </div>
     </section>
   );
@@ -773,6 +786,30 @@ function QuantLab() {
                      letter-spacing: 0.05em; cursor: pointer; transition: all .15s; }
         .ql-filter:hover { color: ${QL.ink}; border-color: ${QL.dim}; }
         .ql-filter[data-active="true"] { background: ${QL.gold}; color: #1a1100; border-color: ${QL.gold}; font-weight: 600; }
+        .ql-scroll-hint {
+          position: absolute; left: clamp(20px, 5vw, 72px); bottom: 28px;
+          display: inline-flex; align-items: center; gap: 12px;
+          color: ${QL.dim}; text-decoration: none; cursor: pointer; z-index: 2;
+          font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.18em;
+          transition: color .2s ease;
+        }
+        .ql-scroll-hint:hover { color: ${QL.gold}; }
+        .ql-scroll-hint:hover .ql-scroll-line { background: ${QL.gold}; }
+        .ql-scroll-line {
+          display: inline-block; width: 48px; height: 1px;
+          background: rgba(91,143,204,0.6); transition: background .2s ease;
+        }
+        .ql-scroll-arrow {
+          display: inline-flex; align-items: center;
+          animation: qlScrollBounce 2.2s ease-in-out infinite;
+        }
+        @keyframes qlScrollBounce {
+          0%, 100% { transform: translateY(0); opacity: 0.55; }
+          50%      { transform: translateY(4px); opacity: 1; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .ql-scroll-arrow { animation: none; opacity: 0.8; }
+        }
         @media (max-width: 880px) {
           .ql-nav-d { display: none !important; }
           .ql-burger { display: inline-flex !important; }
