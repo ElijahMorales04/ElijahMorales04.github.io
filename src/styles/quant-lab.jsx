@@ -213,7 +213,7 @@ function QLHero() {
             <a {...UI.externalLinkProps(CONTENT.links.linkedin)} className="ql-cta">
               <UI.Icon.Linkedin width="14" height="14" /> LinkedIn
             </a>
-            <a href={`mailto:${CONTENT.links.email}`} className="ql-cta">
+            <a {...UI.externalLinkProps(`mailto:${CONTENT.links.email}`)} className="ql-cta">
               <UI.Icon.Mail width="14" height="14" /> Email
             </a>
           </div>
@@ -669,7 +669,7 @@ function QLContact() {
           { k: 'GitHub',   v: 'ElijahMorales04',      href: CONTENT.links.github },
           { k: 'Location', v: 'Fort Lauderdale, FL',  href: null },
         ].map((c, i) => (
-          <a key={c.k} {...(c.href && c.href.startsWith('http') ? UI.externalLinkProps(c.href) : { href: c.href || undefined })}
+          <a key={c.k} {...(c.href ? UI.externalLinkProps(c.href) : { href: undefined })}
              style={{
                padding: '26px 24px', textDecoration: 'none', color: 'inherit',
                borderLeft: i === 0 ? 'none' : `1px solid ${QL.rule}`,

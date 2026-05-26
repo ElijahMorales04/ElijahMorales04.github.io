@@ -101,26 +101,10 @@ UI.scrollToId = (id) => {
   window.scrollTo({ top, behavior: 'smooth' });
 };
 
-UI.openExternal = (href) => {
-  if (!href || href === '#') return;
-  let opened = null;
-  try {
-    opened = window.open(href, '_blank', 'noopener,noreferrer');
-  } catch {}
-  if (!opened) window.location.assign(href);
-};
-
 UI.externalLinkProps = (href) => ({
   href,
   target: '_blank',
   rel: 'noopener noreferrer',
-  onClick: (event) => {
-    if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
-      return;
-    }
-    event.preventDefault();
-    UI.openExternal(href);
-  },
 });
 
 UI.useScrollSpy = function (ids) {
