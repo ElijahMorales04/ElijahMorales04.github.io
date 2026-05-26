@@ -677,7 +677,7 @@ function QLContact() {
           </div>
           <div style={{ marginTop: 14, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             <a {...UI.emailLinkProps(CONTENT.links.email)} className="ql-contact-action">
-              <UI.Icon.Mail width="13" height="13" /> Compose
+              <UI.Icon.Mail width="13" height="13" /> Email
             </a>
             <button type="button" onClick={copyEmail} className="ql-contact-action">
               <UI.Icon.Copy width="13" height="13" /> {copied ? 'Copied' : 'Copy'}

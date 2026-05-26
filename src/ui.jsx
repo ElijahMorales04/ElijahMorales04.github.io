@@ -113,15 +113,8 @@ UI.externalLinkProps = (href) => ({
   rel: 'noopener noreferrer',
 });
 
-UI.emailComposeHref = (email) => {
-  const to = encodeURIComponent(email);
-  const subject = encodeURIComponent('Portfolio inquiry');
-  const body = encodeURIComponent('Hi Elijah,\n\n');
-  return `https://mail.google.com/mail/u/0/?fs=1&tf=cm&to=${to}&su=${subject}&body=${body}`;
-};
-
 UI.emailLinkProps = (email) => ({
-  ...UI.externalLinkProps(UI.emailComposeHref(email)),
+  href: `mailto:${email}`,
 });
 
 UI.copyText = async (text) => {
